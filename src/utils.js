@@ -6,16 +6,11 @@ var uuid = function () {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 };
 
-var now = function () {
-  return (new Date()).getTime();
-};
-
 var interpolate = function (a, b, lambda) {
   return a * (1 - lambda) + b * lambda;
 };
 
 module.exports = {
   uuid: uuid,
-  now: now,
   interpolate: interpolate
 };

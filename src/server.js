@@ -3,22 +3,22 @@ var app = require('express')(),
   http = require('http').Server(app),
   io = require('socket.io')(http),
   logic = require('./logic'),
+  timer = require('./timer').server(),
   utils = require('./utils');
 
 app.get('/', function(req, res) { res.sendFile(__dirname + '/index.html'); });
 app.get('/client.js', browserify(__dirname + '/client.js'));
 
 var state = logic.init();
-var loop = function (last) {
-  var curr = utils.now();
-  var delta = curr - last;
+var loop = function () {
+  var delta = timer.delta();
 
   state = logic.update(state, delta);
   io.emit('state', state.toJS());
 
-  setTimeout(function () { loop(curr); }, 1000 / 60);
+  setTimeout(loop, 1000 / 60);
 };
-loop(utils.now());
+loop();
 
 io.on('connection', function (socket) {
   console.log('a user connected');

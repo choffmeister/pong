@@ -2,6 +2,8 @@ var Immutable = require('immutable'),
   utils = require('./utils');
 
 var init = function () {
+  var angle = Math.random() * Math.PI * 2;
+
   return Immutable.fromJS({
     id: utils.uuid(),
     duration: 0,
@@ -19,8 +21,8 @@ var init = function () {
         y: 0.5
       },
       velocity: {
-        x: Math.sign(Math.random() - 0.5) / 4,
-        y: Math.random() - 0.5 / 4
+        x: Math.sin(angle) / 4,
+        y: Math.cos(angle) / 4
       }
     }
   });
@@ -29,8 +31,8 @@ var init = function () {
 var update = function (state, delta) {
   var ball = state.get('ball').toJS();
 
-  ball.position.x += ball.velocity.x * delta / 1000;
-  ball.position.y += ball.velocity.y * delta / 1000;
+  ball.position.x += ball.velocity.x * delta;
+  ball.position.y += ball.velocity.y * delta;
 
   if (ball.position.x < 0) {
     ball.position.x *= -1;
